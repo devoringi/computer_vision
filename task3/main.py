@@ -26,21 +26,4 @@ if __name__ == '__main__':
     lap = cv2.Laplacian(s, cv2.CV_16S, ksize=3)
     res = np.hstack((s, lap))  # stacking images side-by-side
     cv2.imwrite('laplas.png', res)
-    #blanding
-    img5 = cv2.imread('pic.jpg')
-    im = Image.open('cat.png').convert('RGB')
-    pixels = im.load()
-    for i in range(im.size[0]):
-        for j in range(im.size[1]):
-            r, g, b, = pixels[i, j]
-            if (r==255 and g==255 and b == 255):
-                r=0
-                g=0
-                b=0
-            else:
-                r=255
-                g=255
-                b=255
-            pixels[i, j] = r,g,b
-    im.show()
     cv2.waitKey(0)
