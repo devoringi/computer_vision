@@ -1,9 +1,9 @@
 import cv2
 import numpy as np
 
-img1 = cv2.imread("ball1.png")
+img1 = cv2.imread("pic1.png")
 img1 = cv2.resize(img1, (1000, 1000))
-img2 = cv2.imread("ball2.jpg")
+img2 = cv2.imread("pic2.png")
 img2 = cv2.resize(img2, (1000, 1000))
 
 
@@ -23,16 +23,16 @@ for i in range(5, 0, -1):
     laplacian = cv2.subtract(gaussian_pyramid[i-1], gaussian_expanded)
     laplacian_pyramid.append(laplacian)
 
-
-layer = img2.copy()
-gaussian_pyramid2 = [layer]
+#2 img
+layer2 = img2.copy()
+gaussian_pyramid2 = [layer2]
 for i in range(6):
-    layer = cv2.pyrDown(layer)
-    gaussian_pyramid2.append(layer)
+    layer2 = cv2.pyrDown(layer2)
+    gaussian_pyramid2.append(layer2)
 
 
-layer = gaussian_pyramid2[5]
-laplacian_pyramid2 = [layer]
+layer2 = gaussian_pyramid2[5]
+laplacian_pyramid2 = [layer2]
 for i in range(5, 0, -1):
     size = (gaussian_pyramid2[i-1].shape[1], gaussian_pyramid2[i-1].shape[0])
     gaussian_expanded = cv2.pyrUp(gaussian_pyramid2[i], dstsize=size)
@@ -42,6 +42,7 @@ for i in range(5, 0, -1):
 
 res_pyramid = []
 n = 0
+#p1+p2
 for img1_lap, img2_lap in zip(laplacian_pyramid, laplacian_pyramid2):
     n += 1
     cols, rows, ch = img1_lap.shape
@@ -49,12 +50,12 @@ for img1_lap, img2_lap in zip(laplacian_pyramid, laplacian_pyramid2):
     res_pyramid.append(laplacian)
 
 
-res_reconstructed = res_pyramid[0]
+res = res_pyramid[0]
 for i in range(1, 5):
     size = (res_pyramid[i].shape[1], res_pyramid[i].shape[0])
-    res_reconstructed = cv2.pyrUp(res_reconstructed, dstsize=size)
-    res_reconstructed = cv2.add(res_pyramid[i], res_reconstructed)
+    res = cv2.pyrUp(res, dstsize=size)
+    res = cv2.add(res_pyramid[i], res)
 
-cv2.imshow("", res_reconstructed)
+cv2.imshow("", res)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
